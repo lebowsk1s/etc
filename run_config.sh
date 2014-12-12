@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-# hello
 # setting the vimrc in your home
 echo "Set the .vimrc in your home"
 if [ -f "$HOME/.vimrc" ]; then
@@ -33,15 +31,25 @@ fi
 cp -v .bash_aliases $HOME/.bash_aliases
 . .bash_aliases
 
-type foo >/dev/null 2>&1
-
+# set the tmux config file, if the tmux command is exist
+type tmux >/dev/null 2>&1
 if [ $? == 0 ]; then
     echo "Set the tmux config file in your home"
-    cp .tmux.conf $HOME/.tumux.conf
+    cp -v .tmux.conf $HOME/.tmux.conf
 else
     echo "You don't have tmux, needn't to set it"
 fi
 
+# set the proxychains config file, if the proxychains command is exist
+type proxychains >/dev/null 2>&1
+if [ $? == 0 ]; then
+    echo "Set the proxychains config file in your /etc"
+    sudo cp -v proxychains.conf /etc/proxychains.conf
+    echo "Set the sshproxy.sh in your /usr/local/bin"
+    sudo cp -v sshproxy.sh /usr/local/bin/sshproxy.sh
+else
+    echo "You don't have proxychains, needn't to set it"
+fi
 
 #测试权限
 if [ ! $(id -u) -ne 0 ]; then
