@@ -1,0 +1,96 @@
+
+export ANDROID_SDK_VERSION=19
+export GYP_DEFINES="$GYP_DEFINES  android_sdk_version=19"
+
+export NDK_PROJECT_PATH=/home/zhuch/WebRTC/src/webrtc/examples/android/opensl_loopback
+export APP_BUILD_SCRIPT=/home/zhuch/WebRTC/android-webrtc.mk
+
+export APP_BUILD_SCRIPT=~/WebRTC/src/webrtc/voice_engine/test/android/android_test/jni/Application.mk
+
+
+ninja -C out/Release/ -t clean
+ninja -C out/Release/
+
+
+sudo apt-get install g++-arm-linux-gnueabi
+sudo apt-get install g++-arm-linux-gnueabihf
+sudo apt-get install g++-4.8-multilib-arm-linux-gnueabihf
+sudo apt-get install g++-4.7-multilib-arm-linux-gnueabihf 
+libstdc++6-arm64-cross
+libstdc++6-armel-cross
+libstdc++6-armhf-cross
+libstdc++6-4.7-dev
+
+gclient runhooks --force
+export GYP_DEFINES="build_with_chromium=0 $GYP_DEFINES"
+./build/gyp_chromium --depth=.  -DOS=linux -Dtarget_arch=arm -Dinclude_tests=1 -Denable_protobuf=1 -Denable_video=1 all.gyp
+--------------------------------------
+
+--------------------------------------
+x86 clang 
+export PATH=/home/zhuch/WebRTC/depot_tools:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+export ANDROID_NDK_ROOT=/home/zhuch/WebRTC/src/third_party/android_tools/ndk
+gclient runhooks --force
+ninja -C out/Release/
+--------------------------------------
+arm android
+export PATH=/home/zhuch/WebRTC/depot_tools:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+export ANDROID_NDK_ROOT=/home/zhuch/WebRTC/src/third_party/android_tools/ndk
+cd src
+source ./build/android/envsetup.sh
+export GYP_DEFINES="$GYP_DEFINES OS=android"
+rm -r out
+cd ..
+gclient cleanup
+gclient sync --force
+gclient runhooks --force
+cd src
+ninja -C out/Release/ WebRTCDemo
+adb install -r out/Debug/WebRTCDemo-debug.apk
+---------------------------------------
+vi src/build/common.gypi
+define /webrtc/system_wrappers/source/cpu_feather.cc WebRtc_GetCPUFeaturesARM
+--------------------------------------
+arm ubuntu_arm_gcc
+export PATH=/home/zhuch/WebRTC/depot_tools:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+export GYP_CROSSCOMPILE=1
+export CC=arm-linux-gnueabihf-gcc
+export CXX=arm-linux-gnueabihf-g++
+export AR=arm-linux-gnueabihf-ar
+export CC_host=gcc
+export CXX_host=g++
+export GYP_DEFINES="OS=linux target_arch=arm arm_version=7 arm_neon=1 arm_float_abi=hard clang=0 werror="
+gclient cleanup
+gclient runhooks --force
+cd src/
+ninja -C out/Release/
+ninja -C out/Release G722Test -t clean
+----------------------------------------
+arm fsl-gcc
+export LIBRARY_PATH=/home/zhuch/WebRTC/src/arm-sysroot/lib:/home/zhuch/WebRTC/src/arm-sysroot/usr/lib:$LIBRARY_PATH 
+export PATH=/home/zhuch/WebRTC/depot_tools:$PATH
+export PATH=/home/zhuch/fsl-linaro-toolchain/bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+export GYP_CROSSCOMPILE=1
+export CC=arm-fsl-linux-gnueabi-gcc
+export CXX=arm-fsl-linux-gnueabi-g++
+export AR=arm-fsl-linux-gnueabi-ar
+export CC_host=gcc
+export CXX_host=g++
+export GYP_DEFINES="OS=linux target_arch=arm arm_version=7 arm_neon=1 arm_float_abi=hard clang=0 werror="
+export GYP_DEFINES="OS=linux target_arch=arm arm_version=7 clang=0 werror="
+gclient cleanup
+gclient runhooks --force
+cd src/
+ninja -C out/Release/
+ninja -C out/Release G722Test
+
+./arm-fsl-linux-gnueabi/include/c++/4.6.2
+./native/usr/lib/gcc/arm-fsl-linux-gnueabi/4.6.2
+./native/usr/libexec/gcc/arm-fsl-linux-gnueabi/4.6.2
+./lib/gcc/arm-fsl-linux-gnueabi/4.6.2
+./libexec/gcc/arm-fsl-linux-gnueabi/4.6.2
+
