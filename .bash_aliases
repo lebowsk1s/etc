@@ -5,5 +5,5 @@ alias l='ls'
 alias l.='ls -d .*'
 
 alias ..='cd ..'
-alias ..='cd..'
+alias cd..='cd ..'
 alias ...='cd ../..'
