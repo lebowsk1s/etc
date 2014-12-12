@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+# hello
 # setting the vimrc in your home
 echo "Set the .vimrc in your home"
 if [ -f "$HOME/.vimrc" ]; then
